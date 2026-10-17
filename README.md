@@ -54,7 +54,7 @@ The familiar claim that 20% of customers account for 80% of sales did not descri
 
 Because the algorithm suggested **18%** and the more interpretable conventional cutoff was **20%**, I fixed the baseline high-spending group at the **top 20%**.
 
-![Cumulative spending concentration — original Korean chart](../src/image-1.png)
+![Lorenz curve of household spending in weeks 17-26: the top 10%, 20% and 30% of households hold 36.1%, 55.4% and 69.0% of revenue, Gini = 0.532](images/lorenz-curve.png)
 
 ## 4. How I handled unusual transactions
 
