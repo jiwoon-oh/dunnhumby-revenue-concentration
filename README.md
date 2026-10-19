@@ -47,7 +47,7 @@ I limited the initial period to roughly **10–15%** of the stable interval, or 
 
 I chose **10 weeks** for the main analysis and planned checks using **8 and 12 weeks**.
 
-![Early-period rank stability — original Korean chart](../src/image.png)
+![Spearman rank correlation between odd-week and even-week household ranks by baseline length: 0.40 at 2 weeks, 0.697 at the chosen 10 weeks (kneed elbow), 0.82 at 20 weeks](images/rank-stability.png)
 
 ## 3. Choose the top X%: spending concentration
 
@@ -100,7 +100,7 @@ However, high initial performers often move closer to the average on a later mea
 
 This finding was not solely due to picking exactly 10 weeks. Still, changing the window does **not completely rule out regression to the mean**. It is a sensitivity check, not a full identification strategy.
 
-![Spending changes by initial group — original Korean chart](../src/image-4.png)
+![Box plots of each household's spending change (late minus early): initial top 20% median −131.45 and mean −111.49 (n = 419); remaining 80% median +36.49 and mean +102.74 (n = 1,676)](images/spend-change-box.png)
 
 ## 7. Distribution assumptions
 
@@ -152,6 +152,8 @@ A revenue share is a group-level ratio, not a separate observation for every hou
 
 The interval excludes zero. Both the group's total revenue share and household-level spending declined.
 
+![Revenue share of the initial top 20% fell from 54.87% to 41.96% (−12.91 percentage points); the 95% bootstrap interval runs from −14.81 to −11.07](images/share-bootstrap.png)
+
 ## 9. Conclusion for H4-1
 
 The hypothesis that initial top spenders drove subsequent revenue growth was **not supported**. Their spending and share of revenue both fell, while the remaining households increased spending.
@@ -199,6 +201,8 @@ I calculated how much of the positive spending change among the remaining 80% ca
 
 New/reactivated households represented 43.5% of the group but contributed only 30% of its observed spending increase. Existing households accounted for the remaining 70%.
 
+![Share of households against share of the net spending increase: existing 56.5% of households and 70.0% of the increase, new or reactivated 43.5% of households and 30.0% of the increase](images/contribution-split.png)
+
 Comparing the distributions of change within the remaining 80%:
 
 - Mann–Whitney U **p = 0.000928**, significant after Bonferroni adjustment
@@ -208,7 +212,7 @@ Comparing the distributions of change within the remaining 80%:
 
 The difference was detectable statistically, but its effect size was small. This is a useful example of why **statistical significance and practical importance are different questions**.
 
-![Spending-growth contributions by customer status — original Korean chart](../src/image-6.png)
+![Left: existing households contributed 70.0% and new or reactivated households 30.0% of the net spending increase in the remaining 80%. Right: median change per household +51.78 for existing and +10.26 for new or reactivated households](images/cohort-contribution.png)
 
 ## 13. H4-2 conclusion
 
@@ -282,7 +286,11 @@ The model should use **one row per household** to prevent data from the same hou
 
 The model improved on random ranking, but it still missed roughly two out of five households that later fell out of the top spending group.
 
-![Logistic regression model evaluation — original Korean chart](../src/image-9.png)
+![Logistic regression confusion matrix: 207 true negatives, 69 false positives, 89 false negatives and 134 true positives](images/confusion-matrix.png)
+
+![Cross-validation PR-AUC and recall by fold: mean PR-AUC 0.685 (SD 0.049), mean recall 0.601 (SD 0.084)](images/cv-folds.png)
+
+![Precision–recall curve of the logistic regression, above the stratified dummy classifier at 0.433; at threshold 0.5 recall is 0.601 and precision 0.660](images/pr-curve.png)
 
 ### Odds-ratio interpretation
 
@@ -312,7 +320,7 @@ The most important predictors overlapped considerably with the logistic results.
 
 That is interesting for customer prioritization, but it does not prove that targeting households near those thresholds produces the greatest campaign lift.
 
-![Feature importance — original Korean chart](../src/image-14.png)
+![Random forest SHAP importance: demographic survey present 0.082, baseline spend 0.049, category diversity 0.029, income band 0.024 and items per basket 0.017 are the top five](images/shap-importance.png)
 
 ## 22. Why false negatives and false positives have different costs
 
