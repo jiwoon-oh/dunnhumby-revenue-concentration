@@ -365,6 +365,7 @@ For a practical retention strategy, I would look beyond the highest historical s
 
 ```
 pip install -r requirements.txt
+pip install jupyter
 ```
 
 The pinned versions are those of the Python 3.11 environment the notebooks were run in.

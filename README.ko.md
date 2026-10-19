@@ -361,6 +361,7 @@ SHAP 변수 중요도 상위 항목은 다음과 같았다.
 
 ```
 pip install -r requirements.txt
+pip install jupyter
 ```
 
 버전은 노트북을 실행한 Python 3.11 환경 기준으로 고정했다.
