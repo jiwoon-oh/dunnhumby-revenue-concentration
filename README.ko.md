@@ -359,6 +359,12 @@ SHAP 변수 중요도 상위 항목은 다음과 같았다.
 
 ## 실행 방법
 
+```
+pip install -r requirements.txt
+```
+
+버전은 노트북을 실행한 Python 3.11 환경 기준으로 고정했다.
+
 1. Dunnhumby *The Complete Journey* CSV를 `data/`에 내려받는다(`transaction_data`, `hh_demographic`, `product`, `causal_data`, `campaign_table`, `campaign_desc`, `coupon`, `coupon_redempt`). git에는 올라가지 않는다.
 2. 저장소 루트에서 아래 순서로 노트북을 실행한다. 경로와 `SEED = 42`는 `config.py`에서 정한다.
 

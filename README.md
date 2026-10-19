@@ -363,6 +363,12 @@ For a practical retention strategy, I would look beyond the highest historical s
 
 ## How to run
 
+```
+pip install -r requirements.txt
+```
+
+The pinned versions are those of the Python 3.11 environment the notebooks were run in.
+
 1. Download the Dunnhumby *The Complete Journey* CSVs into `data/` (`transaction_data`, `hh_demographic`, `product`, `causal_data`, `campaign_table`, `campaign_desc`, `coupon`, `coupon_redempt`). They are git-ignored.
 2. Run the notebooks from the repository root in this order. `config.py` sets all paths and `SEED = 42`.
 
