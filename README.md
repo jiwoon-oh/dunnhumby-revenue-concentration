@@ -294,15 +294,26 @@ The model improved on random ranking, but it still missed roughly two out of fiv
 
 ### Odds-ratio interpretation
 
-Odds ratios for numeric features are per one standard deviation. Intervals are 95% percentile bootstrap intervals (1,000 household resamples, seed 42) for the penalized model used for prediction; p-values come from an unpenalized refit of the same model.
+Odds ratios for numeric features are per one standard deviation (SD). Intervals are 95% percentile bootstrap intervals (1,000 household resamples, seed 42) for the penalized model used for prediction; p-values come from an unpenalized refit of the same model. An interval that excludes 1 means an association was found; an interval that includes 1 means none was established.
 
-- **`has_demo` (OR = 0.32, 95% CI 0.19–0.51):** households with demographic records were less likely to leave the top spending group. This is the clearest association in the model. It might proxy customer engagement; it is not proof that completing a survey prevents rank decline.
-- **`sales_early` (OR = 0.64, 95% CI 0.42–0.85) and `category_diversity` (OR = 0.74, 95% CI 0.55–1.00):** higher starting spending and broader purchases were associated with a lower probability of falling out. The `category_diversity` interval just reaches 1, and with 499 households I treat both as suggestive.
-- **`exposure_ratio` (OR = 0.96, 95% CI 0.78–1.18, p = 0.71):** no association was established after accounting for the other variables, even though the raw group means differed slightly.
-- **`n_baskets` (OR = 1.29, 95% CI 0.91–1.87, p = 0.07):** no association was established either. The point estimate leans toward higher risk with more visits, but the interval includes 1.
+| Variable | Unit | Odds ratio | 95% CI | p | Reading |
+|---|---|---:|---|---:|---|
+| `has_demo` | demographic record present vs absent | 0.32 | 0.19–0.51 | 5 × 10⁻⁵ | Association found (the clearest) |
+| `sales_early` | per 1 SD (≈ $429) | 0.64 | 0.42–0.85 | 0.009 | Association found |
+| Income band (`INCOME_DESC`) | per 1 SD (≈ 2.0 of 12 ordered bands) | 0.73 | 0.55–0.92 | 0.007 | Association found |
+| `category_diversity` | per 1 SD (≈ 20.6 categories) | 0.74 | 0.55–1.00 | 0.047 | Association found (borderline: upper bound 0.998) |
+| `n_baskets` | per 1 SD (≈ 23.1 baskets) | 1.29 | 0.91–1.87 | 0.07 | Not established |
+| `exposure_ratio` | per 1 SD (≈ 0.079) | 0.96 | 0.78–1.18 | 0.71 | Not established |
+
+- **`has_demo`:** households with demographic records were less likely to leave the top spending group. It might proxy customer engagement; it is not proof that completing a survey prevents rank decline.
+- **Income band:** this is an ordered code, not a category compared with a reference level: 12 ordered bands from Under 15K (0) to 250K+ (11). The odds ratio compares households one SD (about two bands) apart, and higher-income households were less likely to drop out. The 180 households without survey data were assigned the most common band (50–74K); `has_demo` identifies them.
+- **`sales_early` and `category_diversity`:** higher starting spending and broader purchases were associated with a lower probability of falling out. The `category_diversity` interval only just excludes 1.
+- **`exposure_ratio` and `n_baskets`:** no association was established after accounting for the other variables. The point estimate for visit frequency (1.29) leans toward higher risk, but its interval includes 1 and should not be read as a risk factor.
 - **Housing categories:** some cells are very small, so I do not interpret their estimates.
 
 All odds ratios describe associations conditional on included variables, not causal responses to changing a feature.
+
+![Forest plot of odds ratios with 95% bootstrap intervals on a log scale: demographic survey present 0.32, baseline spend 0.64, income band 0.73 and category diversity 0.74 have intervals that exclude 1; visit frequency 1.29 and promotion exposure 0.96 do not](images/odds-ratios.png)
 
 ## 21. Model 2: random forest and SHAP
 
@@ -321,6 +332,8 @@ The most important predictors overlapped considerably with the logistic results.
 That is interesting for customer prioritization, but it does not prove that targeting households near those thresholds produces the greatest campaign lift.
 
 ![Random forest SHAP importance: demographic survey present 0.082, baseline spend 0.049, category diversity 0.029, income band 0.024 and items per basket 0.017 are the top five](images/shap-importance.png)
+
+![Mean SHAP value by decile of the feature: baseline spend falls from +0.091 in the lowest decile to −0.082 in the ninth and −0.084 in the tenth, flat above 1,246; category diversity keeps falling to −0.061 in the top decile](images/shap-saturation.png)
 
 ## 22. Why false negatives and false positives have different costs
 
@@ -359,7 +372,7 @@ For a practical retention strategy, I would look beyond the highest historical s
 
    | # | Notebook | Writes |
    |---|---|---|
-   | 1 | `dunnhumby_data_overview` | `images/weekly_revenue_trend.png` |
+   | 1 | `dunnhumby_data_overview` | `outputs/`: weekly revenue and trend fit |
    | 2 | `gap_analysis` | — |
    | 3 | `h4_transaction_eda` | `outputs/`: rank stability, Lorenz, Gini, concentration, household counts |
    | 4 | `h4_normality_variance` | `outputs/`: panel summary, normality and Levene tests, sensitivity, Jaccard |
@@ -370,8 +383,9 @@ For a practical retention strategy, I would look beyond the highest historical s
    | 9 | `h4_ml_encoding` | `outputs/`: VIF, encoding summary; encoded table in `outputs/intermediate/` |
    | 10 | `h4_ml_model_training` | `outputs/`: CV metrics, confusion matrix, odds ratios, baselines, thresholds |
    | 11 | `h4_ml_rf_shap` | `outputs/`: random forest CV, SHAP summary and saturation deciles |
+   | 12 | `h4_figures` | `images/`: every figure, drawn from `outputs/` (set `TRANSPARENT = True` for transparent versions) |
 
-   Notebooks 3–6 are independent of each other; 8 → 9 → 10 → 11 must run in order.
+   Notebooks 3–6 are independent of each other; 8 → 9 → 10 → 11 must run in order; 12 runs last.
 3. Every number in this README comes from a CSV in `outputs/`. Household-level intermediate files go to `outputs/intermediate/` and are not committed. Running the notebooks twice from a fresh kernel produces identical CSVs.
 
 ## Limitations

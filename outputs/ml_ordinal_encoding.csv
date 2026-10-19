@@ -1,0 +1,5 @@
+feature,n_levels,level_0,level_max,imputed_level,n_imputed
+AGE_DESC_encoded,6,19-24,65+,45-54,180
+INCOME_DESC_encoded,12,Under 15K,250K+,50-74K,180
+HOUSEHOLD_SIZE_DESC_encoded,5,1,5+,2,180
+KID_CATEGORY_DESC_encoded,4,None/Unknown,3+,None/Unknown,180
