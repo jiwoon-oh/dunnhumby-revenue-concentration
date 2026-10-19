@@ -11,7 +11,7 @@ I evaluated two hypotheses:
 - **H4-1:** Households in the initially defined top X% increase both their share of total sales and their absolute spending later on.
 - **H4-2:** Initial high-spender status is associated with being a new or reactivated household.
 
-The first hypothesis did not hold. **Spending and revenue share fell for the initial top 20%, while spending rose among the remaining 80%.** I tested how sensitive that result was to the baseline period, examined whether new and reactivated households accounted for the growth, and finally built a model to predict which initial top-20% households would lose their high-spending rank.
+The first hypothesis did not hold. **Spending and revenue share fell for the initial top 20%, while spending rose among the remaining 80%.** I tested how sensitive that result was to the baseline period, examined whether new and reactivated households accounted for the growth, and finally built a model to predict which initial top 20% households would lose their high-spending rank.
 
 Here, *rank decline* is not the same as a customer completely stopping purchases. The modeling target was whether a household **remained in the top 20% later**, not whether it churned.
 
@@ -23,7 +23,7 @@ The analysis uses three related but different populations. The figures differ sl
 |---|---|---:|---|---|
 | **Concentration sample** | Households with at least one transaction in weeks 17–26 | 2,272 | Top 20% of households on the Lorenz curve (interpolated, no hard cutoff) | Section 3: Lorenz curve, Gini, 55.4% |
 | **H4-1 panel** | Households with transactions in both weeks 17–26 and weeks 90–99 | 2,095 | **419** (early spend ≥ 582.35) | Sections 5–9: group changes, tests A–D, 54.87% → 41.96% |
-| **Wide panel** | All households with any transaction in weeks 17–99; early spend set to 0 if none | 2,492 | **499** (early spend ≥ 535.29) | Sections 10–13: new/reactivated cross-tab; section 14 onward: prediction model |
+| **Wide panel** | All households with any transaction in weeks 17–99; early spend set to 0 if none | 2,492 | **499** (early spend ≥ 535.29) | Sections 10–13: new-or-reactivated cross-tab; section 14 onward: prediction model |
 
 Of the 2,500 households in the data, 8 have no transaction in weeks 17–99 (seven existing, one reactivated). They are in the status counts of section 10 but not in the wide panel.
 
@@ -111,7 +111,7 @@ I therefore used rank-based tests to compare within-group and between-group chan
 
 ## 8. Test H4-1: absolute spending versus sales share
 
-I treated absolute spending and the group's share of total revenue as separate outcomes. The three main household-level tests used a Bonferroni-adjusted threshold of `α = 0.05/3 ≈ 0.0167`.
+I treated absolute spending and the group's share of total revenue as separate outcomes. The three main household-level tests used a Bonferroni-corrected threshold of `α = 0.05/3 ≈ 0.0167`.
 
 ### Test A — spending within the initial top 20% (Wilcoxon)
 
@@ -147,12 +147,12 @@ A revenue share is a group-level ratio, not a separate observation for every hou
 |---|---:|
 | Early | **54.87%** |
 | Late | **41.96%** |
-| Change | **−12.91 percentage points** |
-| Bootstrap 95% CI | **[−14.81, −11.07] percentage points** |
+| Change | **−12.91 percentage points (pp)** |
+| Bootstrap 95% CI | **[−14.81, −11.07] pp** |
 
 The interval excludes zero. Both the group's total revenue share and household-level spending declined.
 
-![Revenue share of the initial top 20% fell from 54.87% to 41.96% (−12.91 percentage points); the 95% bootstrap interval runs from −14.81 to −11.07](images/share-bootstrap.png)
+![Revenue share of the initial top 20% fell from 54.87% to 41.96% (−12.91 pp); the 95% bootstrap interval runs from −14.81 to −11.07](images/share-bootstrap.png)
 
 ## 9. Conclusion for H4-1
 
@@ -188,24 +188,24 @@ I checked that these categories were mutually exclusive and that they covered al
 - Chi-square p-value: **1.5 × 10⁻³⁴**.
 - **Cramér's V = 0.246**.
 
-New/reactivated status was clearly associated with baseline spending rank. Yet this association alone did not establish that newly active households caused most of the sales growth.
+New-or-reactivated status was clearly associated with baseline spending rank. Yet this association alone did not establish that newly active households caused most of the sales growth.
 
 ## 12. H4-2: break down the actual spending increase
 
-I calculated how much of the positive spending change among the remaining 80% came from existing versus new/reactivated households.
+I calculated how much of the positive spending change among the remaining 80% came from existing versus new or reactivated households.
 
 | Status within remaining 80% | Share of households | Share of spending increase | Median change |
 |---|---:|---:|---:|
 | Existing | 56.5% | **70.0%** | **51.78** |
-| New/reactivated | 43.5% | **30.0%** | **10.26** |
+| New or reactivated | 43.5% | **30.0%** | **10.26** |
 
-New/reactivated households represented 43.5% of the group but contributed only 30% of its observed spending increase. Existing households accounted for the remaining 70%.
+New or reactivated households represented 43.5% of the group but contributed only 30% of its observed spending increase. Existing households accounted for the remaining 70%.
 
 ![Share of households against share of the net spending increase: existing 56.5% of households and 70.0% of the increase, new or reactivated 43.5% of households and 30.0% of the increase](images/contribution-split.png)
 
 Comparing the distributions of change within the remaining 80%:
 
-- Mann–Whitney U **p = 0.000928**, significant after Bonferroni adjustment
+- Mann–Whitney U **p = 0.000928**, significant after Bonferroni correction
 - Rank-biserial effect size **0.086**, small
 - Common-language effect size **0.457**, close to 0.5
 - Comparison included **1,993 households**
@@ -216,7 +216,7 @@ The difference was detectable statistically, but its effect size was small. This
 
 ## 13. H4-2 conclusion
 
-New/reactivated status and high-spender status were associated, but **existing households accounted for 70% of the spending growth** within the remaining 80%. New/reactivated households did not dominate the observed growth.
+New-or-reactivated status and high-spender status were associated, but **existing households accounted for 70% of the spending growth** within the remaining 80%. New or reactivated households did not dominate the observed growth.
 
 Here, 'contribution' is an **accounting decomposition of observed spending changes**, not a causal estimate of the effect of acquiring or reactivating customers.
 
@@ -249,9 +249,9 @@ I avoided using campaign history that would only become available after the pred
 ## 16. Feature engineering
 
 1. **Demographic missingness:** kept a distinct missing-data category for the 180 households. The original category `Unknown` is different from an entirely absent survey record.
-2. **Outcome balance:** **44.7%** dropped out of the top tier and **55.3%** remained; there was no severe class imbalance.
+2. **Outcome balance:** **44.7%** dropped out of the top 20% and **55.3%** remained; there was no severe class imbalance.
 3. **Quantity anomalies:** among the 499 households, the average `QUANTITY` per basket in the early window reached **9,021** at most (for example **7,660** for one household), and a single transaction line reached **41,686** units, possibly because quantity units differ across products (weight- or volume-based items). I replaced the quantity-based `avg_qty_per_basket` with **`avg_items_per_basket`**, based on distinct items.
-4. **Promotion exposure:** the raw `exposure_ratio` was higher among households that later fell out of the top tier, so I checked its conditional direction in the regression model. After adjusting for the other variables the association disappeared (section 20).
+4. **Promotion exposure:** the raw `exposure_ratio` was higher among households that later fell out of the top 20%, so I checked its conditional direction in the regression model. After adjusting for the other variables the association disappeared (section 20).
 
 ## 17. Feature encoding
 
@@ -281,10 +281,10 @@ The model should use **one row per household** to prevent data from the same hou
 |---|---:|
 | Random-classifier reference PR-AUC | approx. **0.447** (positive prevalence) |
 | Logistic regression PR-AUC | **0.685** |
-| Actual households leaving the top tier | 223 |
+| Actual households leaving the top 20% | 223 |
 | False negatives | **89, or roughly 40%** of actual declines |
 
-The model improved on random ranking, but it still missed roughly two out of five households that later fell out of the top spending group.
+The model improved on random ranking, but it still missed roughly two out of five households that later fell out of the top 20%.
 
 ![Logistic regression confusion matrix: 207 true negatives, 69 false positives, 89 false negatives and 134 true positives](images/confusion-matrix.png)
 
@@ -305,7 +305,7 @@ Odds ratios for numeric features are per one standard deviation (SD). Intervals 
 | `n_baskets` | per 1 SD (≈ 23.1 baskets) | 1.29 | 0.91–1.87 | 0.07 | Not established |
 | `exposure_ratio` | per 1 SD (≈ 0.079) | 0.96 | 0.78–1.18 | 0.71 | Not established |
 
-- **`has_demo`:** households with demographic records were less likely to leave the top spending group. It might proxy customer engagement; it is not proof that completing a survey prevents rank decline.
+- **`has_demo`:** households with demographic records were less likely to leave the top 20%. It might proxy customer engagement; it is not proof that completing a survey prevents rank decline.
 - **Income band:** this is an ordered code, not a category compared with a reference level: 12 ordered bands from Under 15K (0) to 250K+ (11). The odds ratio compares households one SD (about two bands) apart, and higher-income households were less likely to drop out. The 180 households without survey data were assigned the most common band (50–74K); `has_demo` identifies them.
 - **`sales_early` and `category_diversity`:** higher starting spending and broader purchases were associated with a lower probability of falling out. The `category_diversity` interval only just excludes 1.
 - **`exposure_ratio` and `n_baskets`:** no association was established after accounting for the other variables. The point estimate for visit frequency (1.29) leans toward higher risk, but its interval includes 1 and should not be read as a risk factor.
@@ -355,11 +355,11 @@ The model appears to have learned a real predictive association in this sample. 
 | Question | Answer from this analysis |
 |---|---|
 | Did the initial top 20% drive growth? | **No.** Their spending and revenue share fell. |
-| Where did growth in the other 80% come from? | **70%** of observed increases came from existing households; **30%** from new/reactivated households. |
-| Is new/reactivated status associated with spending tier? | Yes; **Cramér's V = 0.246**. |
-| Can later top-tier decline be predicted? | Partly; logistic PR-AUC **0.685**, but substantial false negatives remain. |
+| Where did growth in the other 80% come from? | **70%** of observed increases came from existing households; **30%** from new or reactivated households. |
+| Is new-or-reactivated status associated with baseline spending rank? | Yes; **Cramér's V = 0.246**. |
+| Can a later fall out of the top 20% be predicted? | Partly; logistic PR-AUC **0.685**, but substantial false negatives remain. |
 
-For a practical retention strategy, I would look beyond the highest historical spenders and examine **basket frequency, category diversity, and growth among existing mid- and lower-spending households**. Before introducing interventions, I would also distinguish top-tier rank decline from actual purchase inactivity and measure campaign response relative to an appropriate control.
+For a practical retention strategy, I would look beyond the highest historical spenders and examine **basket frequency, category diversity, and growth among existing medium- and lower-spending households**. Before introducing interventions, I would also distinguish rank decline from the top 20% from actual purchase inactivity and measure campaign response relative to an appropriate control.
 
 ## How to run
 
@@ -399,9 +399,9 @@ The pinned versions are those of the Python 3.11 environment the notebooks were 
 
 - Rank-based group selection can introduce regression-to-the-mean effects even with the baseline period fixed and sensitivity-tested.
 - Spending comparisons describe observed change, not its cause.
-- New/reactivated labels depend on the available transaction history; earlier activity may not be observed.
+- New or reactivated labels depend on the available transaction history; earlier activity may not be observed.
 - Demographic-data availability may be a proxy for unobserved customer engagement.
 - The predictive model uses **499 households**, limiting the precision of reported performance.
 - The target is **retention of high-spending rank**, not direct customer churn or lifetime value.
 
-**Bottom line:** The initial top 20% did not account for the later spending growth. Most of the increase among other households came from existing customers, not the new/reactivated group. Predicting high-spender rank decline was possible to a degree, but those predictions should not be presented as churn or causal marketing effects.
+**Bottom line:** The initial top 20% did not account for the later spending growth. Most of the increase among other households came from existing customers, not the new or reactivated group. Predicting high-spender rank decline was possible to a degree, but those predictions should not be presented as churn or causal marketing effects.
