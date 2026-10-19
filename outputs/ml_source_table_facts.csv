@@ -1,0 +1,17 @@
+metric,value
+households_stable_window,2492.0
+hh_demographic_households,801.0
+demo_coverage_stable_pct,32.142857142857146
+n_top20_early,499.0
+top20_with_demo,319.0
+top20_without_demo,180.0
+top20_demo_coverage_pct,63.92785571142284
+top20_without_demo_pct,36.07214428857716
+coupon_redempt_min_day,225.0
+early_day_min,111.0
+early_day_max,180.0
+coupon_redempt_rows_in_early_window,0.0
+campaigns_total,30.0
+campaigns_overlapping_early_window,0.0
+product_rows,92353.0
+product_unique_ids,92353.0

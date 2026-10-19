@@ -1,0 +1,7 @@
+group,customer_type,n_households
+rest80,existing,1127
+rest80,new,175
+rest80,reactivated,691
+top20,existing,431
+top20,new,34
+top20,reactivated,34

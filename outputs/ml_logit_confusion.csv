@@ -1,0 +1,2 @@
+tn,fp,fn,tp,n,n_actual_shrink,n_actual_retain,fn_rate_pct,recall,precision,threshold
+207,69,89,134,499,223,276,39.91031390134529,0.600896860986547,0.6600985221674877,0.5

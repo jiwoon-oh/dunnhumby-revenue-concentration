@@ -1,0 +1,5 @@
+group,cohort,n_households,row_pct
+rest80,existing,1127,56.54791771199197
+rest80,new_or_reactivated,866,43.45208228800803
+top20,existing,431,86.37274549098196
+top20,new_or_reactivated,68,13.627254509018035

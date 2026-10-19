@@ -1,0 +1,2 @@
+n_rows,n_zero,n_negative,iqr_upper_bound,n_iqr_outliers,pct_iqr_outliers,max_sales_value
+2595732,18850,0,6.790000000000001,190644,7.344517846988826,840.0

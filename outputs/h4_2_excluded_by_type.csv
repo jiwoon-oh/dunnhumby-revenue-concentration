@@ -1,0 +1,3 @@
+customer_type,n_households,first_week_min,last_week_max,before_week17_only,after_week99_only,both_sides
+existing,7,6,14,7,0,0
+reactivated,1,5,102,0,0,1

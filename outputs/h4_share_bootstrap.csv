@@ -1,0 +1,2 @@
+n_panel,n_top,share_early_pct,share_late_pct,share_diff_pp,ci_low_pp,ci_high_pp,n_boot,seed,ci_includes_zero
+2095,419,54.86825261285012,41.962870145747345,-12.905382467102777,-14.812119763130946,-11.067320349879719,5000,42,False

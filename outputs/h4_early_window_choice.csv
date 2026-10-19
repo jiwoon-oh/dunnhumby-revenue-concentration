@@ -1,0 +1,2 @@
+stable_min_week,stable_max_week,total_stable_weeks,kneed_elbow_n,rule_10pct_weeks,rule_15pct_weeks,chosen_early_n
+17,99,83,10,8.3,12.45,10

@@ -1,0 +1,4 @@
+test,description,method,n,statistic,p_value,effect_size_name,effect_size,common_language,median,ci_low,ci_high,ci_what,alpha_adj_3tests,significant
+A,top20 absolute change (late - early),Wilcoxon signed-rank,419,33409.0,1.9722930881785e-05,r = z/sqrt(n),-0.20850566638574006,,-131.45000000000005,-186.3800000000001,-80.95999999999992,bootstrap 95% CI of the median,0.016666666666666666,True
+B,rest80 absolute change (late - early),Wilcoxon signed-rank,1676,474083.0,8.772629741656321e-31,r = z/sqrt(n),-0.28176466417616425,,36.49000000000001,23.90725,49.80499999999998,bootstrap 95% CI of the median,0.016666666666666666,True
+C,top20 vs rest80 change,Mann-Whitney U,2095,249136.5,3.308201021104904e-20,rank-biserial,0.2904560238321723,0.35477198808391386,-167.94000000000005,-229.25325000000012,-116.04362499999995,bootstrap 95% CI of the median difference,0.016666666666666666,True

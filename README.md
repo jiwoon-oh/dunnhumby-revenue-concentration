@@ -15,6 +15,18 @@ The first hypothesis did not hold. **Spending and revenue share fell for the ini
 
 Here, *rank decline* is not the same as a customer completely stopping purchases. The modeling target was whether a household **remained in the top 20% later**, not whether it churned.
 
+### Which "top 20%"?
+
+The analysis uses three related but different populations. The figures differ slightly because the denominators differ, not because of an error.
+
+| Name | Population | Households | Top 20% | Used for |
+|---|---|---:|---|---|
+| **Concentration sample** | Households with at least one transaction in weeks 17–26 | 2,272 | Top 20% of households on the Lorenz curve (interpolated, no hard cutoff) | Section 3: Lorenz curve, Gini, 55.4% |
+| **H4-1 panel** | Households with transactions in both weeks 17–26 and weeks 90–99 | 2,095 | **419** (early spend ≥ 582.35) | Sections 5–9: group changes, tests A–D, 54.87% → 41.96% |
+| **Wide panel** | All households with any transaction in weeks 17–99; early spend set to 0 if none | 2,492 | **499** (early spend ≥ 535.29) | Sections 10–13: new/reactivated cross-tab; section 14 onward: prediction model |
+
+Of the 2,500 households in the data, 8 have no transaction in weeks 17–99 (seven existing, one reactivated). They are in the status counts of section 10 but not in the wide panel.
+
 ---
 
 ## 1. Define the high-spending group using early data only
@@ -44,7 +56,7 @@ Using the first 10 weeks, I sorted households by total spending and calculated c
 | Measure | Value |
 |---|---:|
 | Gini coefficient | **0.532** |
-| Top 1% of households | 6.1% of sales |
+| Top 1% of households | 6.2% of sales |
 | Top 10% | 36.1% of sales |
 | Top 20% | **55.4% of sales** |
 | Top 30% | 68.9% of sales |
@@ -54,7 +66,7 @@ The familiar claim that 20% of customers account for 80% of sales did not descri
 
 Because the algorithm suggested **18%** and the more interpretable conventional cutoff was **20%**, I fixed the baseline high-spending group at the **top 20%**.
 
-![Lorenz curve of household spending in weeks 17-26: the top 10%, 20% and 30% of households hold 36.1%, 55.4% and 69.0% of revenue, Gini = 0.532](images/lorenz-curve.png)
+![Lorenz curve of household spending in weeks 17-26: the top 10%, 20% and 30% of households hold 36.1%, 55.4% and 68.9% of revenue, Gini = 0.532](images/lorenz-curve.png)
 
 ## 4. How I handled unusual transactions
 
@@ -112,31 +124,31 @@ Spending in the initial high-spending group fell significantly.
 
 ### Test B — spending within the remaining 80% (Wilcoxon)
 
-- **p ≈ 0.0000** (rounded output, not literally a zero probability)
+- **p = 8.8 × 10⁻³¹**
 - Median spending change **+36.49**
-- 95% confidence interval **[24.3, 50.1]**
+- 95% confidence interval **[23.9, 49.8]**
 
 Spending among the remaining households increased significantly.
 
 ### Test C — difference in changes between the two groups (Mann–Whitney U)
 
-- **p ≈ 0.0000**
+- **p = 3.3 × 10⁻²⁰**
 - Effect size **r = 0.290**
 - Common-language effect size **0.355**
-- 95% interval for the group difference **[−227.7, −116.0]**
+- 95% interval for the group difference **[−229.3, −116.0]**
 
 Changes in the initially high-spending group tended to be lower. The common-language effect size must be read with the direction of the pairwise comparison; a value near 0.5 indicates little separation between groups.
 
 ### Test D — change in the high-spending group's revenue share
 
-A revenue share is a group-level ratio, not a separate observation for every household. I used **5,000 bootstrap resamples** to quantify uncertainty in its change.
+A revenue share is a group-level ratio, not a separate observation for every household. I used **5,000 bootstrap resamples** (seed 42) to quantify uncertainty in its change. These shares are computed on the H4-1 panel (419 of 2,095 households), so the early share (54.87%) is slightly below the 55.4% concentration in section 3, which uses all 2,272 households active in weeks 17–26.
 
 | Period | Share of total sales from initial top 20% |
 |---|---:|
 | Early | **54.87%** |
 | Late | **41.96%** |
 | Change | **−12.91 percentage points** |
-| Bootstrap 95% CI | **[−14.74, −11.09] percentage points** |
+| Bootstrap 95% CI | **[−14.81, −11.07] percentage points** |
 
 The interval excludes zero. Both the group's total revenue share and household-level spending declined.
 
@@ -154,7 +166,7 @@ I wanted to know whether spending growth among the remaining 80% primarily came 
 - **Reactivated:** not new, but had at least one purchase gap of **13 weeks (91 days)** or more.
 - **Existing:** neither of the above.
 
-I checked that these categories were mutually exclusive and that they covered all 2,500 households.
+I checked that these categories were mutually exclusive and that they covered all 2,500 households. The 2×2 table below covers the 2,492 households with any transaction in weeks 17–99; the other eight (seven existing, one reactivated) only shopped before week 17 or after week 99.
 
 ## 11. H4-2: contingency table and chi-square test
 
@@ -171,7 +183,7 @@ I checked that these categories were mutually exclusive and that they covered al
 | Top 20% | 431 (86.4%) | **68 (13.6%)** |
 
 - Minimum expected cell count: **187**, meeting the usual chi-square approximation requirement.
-- Chi-square p-value: extremely small (`≈ 0.000000` when rounded).
+- Chi-square p-value: **1.5 × 10⁻³⁴**.
 - **Cramér's V = 0.246**.
 
 New/reactivated status was clearly associated with baseline spending rank. Yet this association alone did not establish that newly active households caused most of the sales growth.
@@ -234,14 +246,14 @@ I avoided using campaign history that would only become available after the pred
 
 1. **Demographic missingness:** kept a distinct missing-data category for the 180 households. The original category `Unknown` is different from an entirely absent survey record.
 2. **Outcome balance:** **44.7%** dropped out of the top tier and **55.3%** remained; there was no severe class imbalance.
-3. **Quantity anomalies:** `QUANTITY` sums of **7,660** and **2,559** appeared for some households, possibly because quantity units differed across products. I replaced quantity-sum-based `avg_qty_per_basket` with **`avg_items_per_basket`**, based on distinct items.
-4. **Promotion exposure:** the raw `exposure_ratio` was higher among households that later fell out of the top tier, so I checked its conditional direction in the regression model.
+3. **Quantity anomalies:** among the 499 households, the average `QUANTITY` per basket in the early window reached **9,021** at most (for example **7,660** for one household), and a single transaction line reached **41,686** units, possibly because quantity units differ across products (weight- or volume-based items). I replaced the quantity-based `avg_qty_per_basket` with **`avg_items_per_basket`**, based on distinct items.
+4. **Promotion exposure:** the raw `exposure_ratio` was higher among households that later fell out of the top tier, so I checked its conditional direction in the regression model. After adjusting for the other variables the association disappeared (section 20).
 
 ## 17. Feature encoding
 
-- Standardized **five numeric features** for logistic regression: `sales_early`, `n_baskets`, `avg_items_per_basket`, `category_diversity`, `exposure_ratio`.
+- Standardized **eight features** for logistic regression: the five numeric ones (`sales_early`, `n_baskets`, `avg_items_per_basket`, `category_diversity`, `exposure_ratio`) and three ordinal ones (`AGE_DESC`, `INCOME_DESC`, `HOUSEHOLD_SIZE_DESC`). Binary variables (`has_demo`, one-hot dummies) were left unscaled.
 - Represented demographic-data availability using a separate binary variable, **`has_demo`**.
-- Encoded **four ordinal features** while retaining their order; missing values were handled with reference to observed modes.
+- Encoded **four ordinal features** while retaining their order; missing values were handled with reference to observed modes. `KID_CATEGORY_DESC` was dropped at the VIF step (section 18), leaving three.
 - One-hot encoded **two nominal variables**, preserving `HH_COMP_DESC = Unknown` as its own category.
 
 ## 18. Multicollinearity and feature selection
@@ -264,9 +276,9 @@ The model should use **one row per household** to prevent data from the same hou
 | Measure | Result |
 |---|---:|
 | Random-classifier reference PR-AUC | approx. **0.447** (positive prevalence) |
-| Logistic regression PR-AUC | **0.674** |
+| Logistic regression PR-AUC | **0.685** |
 | Actual households leaving the top tier | 223 |
-| False negatives | **86, or roughly 39%** of actual declines |
+| False negatives | **89, or roughly 40%** of actual declines |
 
 The model improved on random ranking, but it still missed roughly two out of five households that later fell out of the top spending group.
 
@@ -274,17 +286,19 @@ The model improved on random ranking, but it still missed roughly two out of fiv
 
 ### Odds-ratio interpretation
 
-- **`has_demo` (OR ≈ 0.35):** households with demographic records were less likely to leave the top spending group. This might proxy customer engagement; it is not proof that completing a survey prevents rank decline.
-- **`sales_early` and `category_diversity`:** higher starting spending and broader purchases were associated with a lower probability of falling out.
-- **`exposure_ratio`:** unlike the raw group comparison, its conditional coefficient leaned in a protective direction after accounting for other variables.
-- **`n_baskets`:** greater visit frequency conditional on spending could signal smaller baskets and a less stable high-spending rank.
-- **Some housing categories:** coefficient estimates may be unstable because of limited samples.
+Odds ratios for numeric features are per one standard deviation. Intervals are 95% percentile bootstrap intervals (1,000 household resamples, seed 42) for the penalized model used for prediction; p-values come from an unpenalized refit of the same model.
+
+- **`has_demo` (OR = 0.32, 95% CI 0.19–0.51):** households with demographic records were less likely to leave the top spending group. This is the clearest association in the model. It might proxy customer engagement; it is not proof that completing a survey prevents rank decline.
+- **`sales_early` (OR = 0.64, 95% CI 0.42–0.85) and `category_diversity` (OR = 0.74, 95% CI 0.55–1.00):** higher starting spending and broader purchases were associated with a lower probability of falling out. The `category_diversity` interval just reaches 1, and with 499 households I treat both as suggestive.
+- **`exposure_ratio` (OR = 0.96, 95% CI 0.78–1.18, p = 0.71):** no association was established after accounting for the other variables, even though the raw group means differed slightly.
+- **`n_baskets` (OR = 1.29, 95% CI 0.91–1.87, p = 0.07):** no association was established either. The point estimate leans toward higher risk with more visits, but the interval includes 1.
+- **Housing categories:** some cells are very small, so I do not interpret their estimates.
 
 All odds ratios describe associations conditional on included variables, not causal responses to changing a feature.
 
 ## 21. Model 2: random forest and SHAP
 
-The random forest had noticeably lower recall than logistic regression. A dataset with only 499 households may not give a more flexible tree model enough observations to learn reliable nonlinear patterns. For this setting, I preferred **logistic regression as the main predictive model**.
+The random forest had noticeably lower recall than logistic regression (0.529 vs 0.601 in cross-validation). A dataset with only 499 households may not give a more flexible tree model enough observations to learn reliable nonlinear patterns. For this setting, I preferred **logistic regression as the main predictive model**.
 
 Top SHAP-ranked features were:
 
@@ -294,7 +308,7 @@ Top SHAP-ranked features were:
 4. `INCOME_DESC`
 5. `avg_items_per_basket`
 
-The most important predictors overlapped considerably with the logistic results. SHAP also suggested saturation: beyond some level, greater initial spending or category diversity did not correspond to equally large additional changes in the model prediction.
+The most important predictors overlapped considerably with the logistic results. SHAP also showed nonlinear patterns. For `sales_early`, the mean SHAP value fell from +0.091 in the lowest decile to −0.082 in the ninth and −0.084 in the top decile: above roughly 1,250 in early spend, more spending no longer moved the prediction. For `category_diversity` the pattern was different: the mean SHAP value was flat (about +0.03) below roughly 77 categories and kept falling at the high end (−0.061 in the top decile), so there was no saturation at the top.
 
 That is interesting for customer prioritization, but it does not prove that targeting households near those thresholds produces the greatest campaign lift.
 
@@ -309,11 +323,11 @@ If missing an at-risk valuable household is more expensive than sending an extra
 
 ## 23. Additional validation
 
-- **Permutation test:** `p = 0.001`, suggesting performance beyond randomly permuted outcomes.
-- **Dummy classifier:** the logistic model exceeded a simple baseline.
-- **Learning curve:** no clear large train/validation gap, but performance had not fully plateaued.
+- **Permutation test:** `p = 0.001` (1,000 permutations, the smallest attainable value), suggesting performance beyond randomly permuted outcomes.
+- **Dummy classifier:** the logistic model exceeded a stratified dummy classifier (PR-AUC 0.685 vs 0.433).
+- **Learning curve:** validation PR-AUC rose from 0.652 with 119 training households to between 0.680 and 0.687 over the last five training sizes, and the training and validation scores converged (0.682 vs 0.685 at the full size). There is no sign of a large train/validation gap.
 
-The model appears to have learned a real predictive association in this sample. Still, **more observations may improve it**, and performance on a genuinely future period or a different dataset remains untested.
+The model appears to have learned a real predictive association in this sample. The flat validation curve does not suggest that many more households would change the picture for this model, and performance on a genuinely future period or a different dataset remains untested.
 
 ## Summary and next questions
 
@@ -322,9 +336,35 @@ The model appears to have learned a real predictive association in this sample. 
 | Did the initial top 20% drive growth? | **No.** Their spending and revenue share fell. |
 | Where did growth in the other 80% come from? | **70%** of observed increases came from existing households; **30%** from new/reactivated households. |
 | Is new/reactivated status associated with spending tier? | Yes; **Cramér's V = 0.246**. |
-| Can later top-tier decline be predicted? | Partly; logistic PR-AUC **0.674**, but substantial false negatives remain. |
+| Can later top-tier decline be predicted? | Partly; logistic PR-AUC **0.685**, but substantial false negatives remain. |
 
 For a practical retention strategy, I would look beyond the highest historical spenders and examine **basket frequency, category diversity, and growth among existing mid- and lower-spending households**. Before introducing interventions, I would also distinguish top-tier rank decline from actual purchase inactivity and measure campaign response relative to an appropriate control.
+
+## How to run
+
+1. Download the Dunnhumby *The Complete Journey* CSVs into `data/` (`transaction_data`, `hh_demographic`, `product`, `causal_data`, `campaign_table`, `campaign_desc`, `coupon`, `coupon_redempt`). They are git-ignored.
+2. Run the notebooks from the repository root in this order. `config.py` sets all paths and `SEED = 42`.
+
+   ```
+   python -m nbconvert --to notebook --execute --inplace <notebook>.ipynb
+   ```
+
+   | # | Notebook | Writes |
+   |---|---|---|
+   | 1 | `dunnhumby_data_overview` | `images/weekly_revenue_trend.png` |
+   | 2 | `gap_analysis` | — |
+   | 3 | `h4_transaction_eda` | `outputs/`: rank stability, Lorenz, Gini, concentration, household counts |
+   | 4 | `h4_normality_variance` | `outputs/`: panel summary, normality and Levene tests, sensitivity, Jaccard |
+   | 5 | `h4_nonparametric_tests` | `outputs/`: tests A–C, share bootstrap (test D), Bonferroni table |
+   | 6 | `h4_2_crosstab` | `outputs/`: status counts, cross-tabs, chi-square, contribution, excluded households |
+   | 7 | `ml_tables_eda` | `outputs/`: source-table checks and facts |
+   | 8 | `h4_ml_feature_engineering` | `outputs/`: label summary; feature table in `outputs/intermediate/` |
+   | 9 | `h4_ml_encoding` | `outputs/`: VIF, encoding summary; encoded table in `outputs/intermediate/` |
+   | 10 | `h4_ml_model_training` | `outputs/`: CV metrics, confusion matrix, odds ratios, baselines, thresholds |
+   | 11 | `h4_ml_rf_shap` | `outputs/`: random forest CV, SHAP summary and saturation deciles |
+
+   Notebooks 3–6 are independent of each other; 8 → 9 → 10 → 11 must run in order.
+3. Every number in this README comes from a CSV in `outputs/`. Household-level intermediate files go to `outputs/intermediate/` and are not committed. Running the notebooks twice from a fresh kernel produces identical CSVs.
 
 ## Limitations
 

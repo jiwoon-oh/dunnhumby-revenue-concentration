@@ -1,0 +1,2 @@
+n_households,n_has_demo,n_no_demo,n_features_before_vif,n_features_final,n_positive,epv_before_vif
+499,319,180,19,18,223,11.736842105263158
