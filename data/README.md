@@ -13,4 +13,4 @@ The CSV files are not in this repository (they are git-ignored). Download them a
 
 `dunnhumby_data_overview.ipynb` reads all eight files. The analysis notebooks read `transaction_data`, `hh_demographic`, `product`, `campaign_table`, `campaign_desc` and `causal_data`.
 
-Why the files are not here: the dunnhumby page shows no redistribution terms, so I do not redistribute the data, and the main table is large. Please check dunnhumby's terms on that page before reuse.
+Raw files are not included in this repository; download them from the source above.
