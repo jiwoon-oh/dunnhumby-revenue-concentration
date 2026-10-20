@@ -250,7 +250,7 @@ I avoided using campaign history that would only become available after the pred
 
 ## 16. Feature engineering
 
-1. **Demographic missingness:** kept a distinct missing-data category for the 180 households. The original category `Unknown` is different from an entirely absent survey record.
+1. **Demographic missingness:** kept a distinct missing-data category for the 180 households. The original category `Unknown` is different from an entirely absent demographic record.
 2. **Outcome balance:** **44.7%** dropped out of the top 20% and **55.3%** remained; there was no severe class imbalance.
 3. **Quantity anomalies:** among the 499 households, the average `QUANTITY` per basket in the early window reached **9,021** at most (for example **7,660** for one household), and a single transaction line reached **41,686** units, possibly because quantity units differ across products (weight- or volume-based items). I replaced the quantity-based `avg_qty_per_basket` with **`avg_items_per_basket`**, based on distinct items.
 4. **Promotion exposure:** the raw `exposure_ratio` was higher among households that later fell out of the top 20%, so I checked its conditional direction in the regression model. After adjusting for the other variables the association disappeared (section 20).
@@ -307,15 +307,15 @@ Odds ratios for numeric features are per one standard deviation (SD). Intervals 
 | `n_baskets` | per 1 SD (≈ 23.1 baskets) | 1.29 | 0.91–1.87 | 0.07 | Not established |
 | `exposure_ratio` | per 1 SD (≈ 0.079) | 0.96 | 0.78–1.18 | 0.71 | Not established |
 
-- **`has_demo`:** households with demographic records were less likely to leave the top 20%. It might proxy customer engagement; it is not proof that completing a survey prevents rank decline.
-- **Income band:** this is an ordered code, not a category compared with a reference level: 12 ordered bands from Under 15K (0) to 250K+ (11). The odds ratio compares households one SD (about two bands) apart, and higher-income households were less likely to drop out. The 180 households without survey data were assigned the most common band (50–74K); `has_demo` identifies them.
+- **`has_demo`:** households with demographic records were less likely to leave the top 20%. It might proxy customer engagement; it is not proof that having a demographic record prevents rank decline.
+- **Income band:** this is an ordered code, not a category compared with a reference level: 12 ordered bands from Under 15K (0) to 250K+ (11). The odds ratio compares households one SD (about two bands) apart, and higher-income households were less likely to drop out. The 180 households without a demographic record were assigned the most common band (50–74K); `has_demo` identifies them.
 - **`sales_early` and `category_diversity`:** higher starting spending and broader purchases were associated with a lower probability of falling out. The `category_diversity` interval only just excludes 1.
 - **`exposure_ratio` and `n_baskets`:** no association was established after accounting for the other variables. The point estimate for visit frequency (1.29) leans toward higher risk, but its interval includes 1 and should not be read as a risk factor.
 - **Housing categories:** some cells are very small, so I do not interpret their estimates.
 
 All odds ratios describe associations conditional on included variables, not causal responses to changing a feature.
 
-![Forest plot of odds ratios with 95% bootstrap intervals on a log scale: demographic survey present 0.32, baseline spend 0.64, income band 0.73 and category diversity 0.74 have intervals that exclude 1; visit frequency 1.29 and promotion exposure 0.96 do not](images/odds-ratios.png)
+![Forest plot of odds ratios with 95% bootstrap intervals on a log scale: demographic record present 0.32, baseline spend 0.64, income band 0.73 and category diversity 0.74 have intervals that exclude 1; visit frequency 1.29 and promotion exposure 0.96 do not](images/odds-ratios.png)
 
 ## 21. Model 2: random forest and SHAP
 
@@ -333,7 +333,7 @@ The most important predictors overlapped considerably with the logistic results.
 
 That is interesting for customer prioritization, but it does not prove that targeting households near those thresholds produces the greatest campaign lift.
 
-![Random forest SHAP importance: demographic survey present 0.082, baseline spend 0.049, category diversity 0.029, income band 0.024 and items per basket 0.017 are the top five](images/shap-importance.png)
+![Random forest SHAP importance: demographic record present 0.082, baseline spend 0.049, category diversity 0.029, income band 0.024 and items per basket 0.017 are the top five](images/shap-importance.png)
 
 ![Mean SHAP value by decile of the feature: baseline spend falls from +0.091 in the lowest decile to −0.082 in the ninth and −0.084 in the tenth, flat above 1,246; category diversity keeps falling to −0.061 in the top decile](images/shap-saturation.png)
 
