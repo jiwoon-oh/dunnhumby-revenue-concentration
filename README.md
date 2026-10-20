@@ -2,6 +2,8 @@
 
 [한국어](README.ko.md)
 
+Full case study: https://jiwoon-oh.github.io/portfolio/projects/dunnhumby-customer/case1/
+
 ## Question and hypotheses
 
 When a retailer's sales increase, does that growth come from its already valuable customers buying more? Or from other households becoming more active? Using Dunnhumby transaction data, I **fixed the high-spending group at the beginning of the observation period** and tracked what happened to its spending later.

@@ -2,6 +2,8 @@
 
 [English](README.md)
 
+전체 케이스 스터디(영문): https://jiwoon-oh.github.io/portfolio/projects/dunnhumby-customer/case1/
+
 ## 분석 배경과 가설
 
 매출이 증가했다면 기존에 많이 구매하던 고객이 더 많이 산 덕분일까, 아니면 다른 고객들의 지출이 늘어난 걸까? Dunnhumby 가구별 거래 데이터를 이용해 **초기에 상위 지출 고객이었던 집단을 고정한 뒤, 그 집단의 이후 구매 변화**를 추적했다.
