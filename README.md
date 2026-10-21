@@ -13,13 +13,13 @@ I evaluated two hypotheses:
 - **H4-1:** Households in the initially defined top X% increase both their share of total sales and their absolute spending later on.
 - **H4-2:** Initial high-spender status is associated with being a new or reactivated household.
 
-The first hypothesis did not hold. **Spending and revenue share fell for the initial top 20%, while spending rose among the remaining 80%.** I tested how sensitive that result was to the baseline period, examined whether new and reactivated households accounted for the growth, and finally built a model to predict which initial top 20% households would lose their high-spending rank.
+The first hypothesis was not supported. **Spending and revenue share fell for the initial top 20%, while spending rose among the remaining 80%.** These are observed changes between two windows; the analysis does not identify why they occurred. I tested how sensitive that result was to the baseline period, examined whether new and reactivated households accounted for the growth, and finally built a model to predict which initial top 20% households would lose their high-spending rank.
 
 Here, *rank decline* is not the same as a customer completely stopping purchases. The modeling target was whether a household **remained in the top 20% later**, not whether it churned.
 
 ### Which "top 20%"?
 
-The analysis uses three related but different populations. The figures differ slightly because the denominators differ, not because of an error.
+The analysis uses three related but different populations. The figures differ slightly because the denominators differ.
 
 | Name | Population | Households | Top 20% | Used for |
 |---|---|---:|---|---|
@@ -35,7 +35,7 @@ Of the 2,500 households in the data, 8 have no transaction in weeks 17–99 (sev
 
 Defining high spenders after observing the later period would create circular reasoning: it would select households based on the outcome and then report that the selected households spent more. I therefore fixed the group before measuring later outcomes.
 
-I did not immediately assume an 80/20 Pareto split. First, I examined how long a baseline period was needed to rank households consistently and how concentrated spending actually was.
+Instead of assuming an 80/20 Pareto split, I first examined how long a baseline period was needed to rank households consistently and how concentrated spending actually was.
 
 ## 2. Choose the early-period length: rank stability
 
@@ -76,7 +76,7 @@ An IQR screen classified around **7.34%** of `SALES_VALUE` observations as outli
 
 Because the research question concerned high-spending households, automatically deleting large transactions could remove the signal I was trying to examine. I kept the records and used nonparametric tests where normality was not a credible assumption.
 
-## 5. The first result contradicted the hypothesis
+## 5. First comparison of spending change
 
 I calculated spending changes between the early and late periods for each household, then compared the two groups fixed at baseline.
 
@@ -85,9 +85,9 @@ I calculated spending changes between the early and late periods for each househ
 | Top 20% | **−111.49** |
 | Remaining 80% | **+102.74** |
 
-The high-spending group did not expand its spending. It contracted, while the rest grew.
+The initially high-spending group's mean spending decreased, while the mean spending of the remaining households increased.
 
-However, high initial performers often move closer to the average on a later measurement. Before calling this a meaningful pattern, I checked whether the result changed when I selected a different number of baseline weeks.
+However, groups selected for high initial values often move closer to the average on a later measurement (regression to the mean). Before treating this as a pattern, I checked whether the result changed when I selected a different number of baseline weeks.
 
 ## 6. Sensitivity: 8, 10, and 12 baseline weeks
 
@@ -201,7 +201,7 @@ I calculated how much of the positive spending change among the remaining 80% ca
 | Existing | 56.5% | **70.0%** | **51.78** |
 | New or reactivated | 43.5% | **30.0%** | **10.26** |
 
-New or reactivated households represented 43.5% of the group but contributed only 30% of its observed spending increase. Existing households accounted for the remaining 70%.
+New or reactivated households represented 43.5% of the group but contributed 30% of its observed spending increase. Existing households accounted for the remaining 70%.
 
 ![Share of households against share of the net spending increase: existing 56.5% of households and 70.0% of the increase, new or reactivated 43.5% of households and 30.0% of the increase](images/contribution-split.png)
 
@@ -212,7 +212,7 @@ Comparing the distributions of change within the remaining 80%:
 - Common-language effect size **0.457**, close to 0.5
 - Comparison included **1,993 households**
 
-The difference was detectable statistically, but its effect size was small. This is a useful example of why **statistical significance and practical importance are different questions**.
+The difference was detectable statistically, but its effect size was small, so the effect size is reported alongside the p-value to separate **statistical significance from practical importance**.
 
 ![Left: existing households contributed 70.0% and new or reactivated households 30.0% of the net spending increase in the remaining 80%. Right: median change per household +51.78 for existing and +10.26 for new or reactivated households](images/cohort-contribution.png)
 
@@ -331,7 +331,7 @@ Top SHAP-ranked features were:
 
 The most important predictors overlapped considerably with the logistic results. SHAP also showed nonlinear patterns. For `sales_early`, the mean SHAP value fell from +0.091 in the lowest decile to −0.082 in the ninth and −0.084 in the top decile: above roughly 1,250 in early spend, more spending no longer moved the prediction. For `category_diversity` the pattern was different: the mean SHAP value was flat (about +0.03) below roughly 77 categories and kept falling at the high end (−0.061 in the top decile), so there was no saturation at the top.
 
-That is interesting for customer prioritization, but it does not prove that targeting households near those thresholds produces the greatest campaign lift.
+This may be relevant for customer prioritization, but it does not show that targeting households near those thresholds produces the greatest campaign lift.
 
 ![Random forest SHAP importance: demographic record present 0.082, baseline spend 0.049, category diversity 0.029, income band 0.024 and items per basket 0.017 are the top five](images/shap-importance.png)
 
@@ -350,13 +350,13 @@ If missing an at-risk valuable household is more expensive than sending an extra
 - **Dummy classifier:** the logistic model exceeded a stratified dummy classifier (PR-AUC 0.685 vs 0.433).
 - **Learning curve:** validation PR-AUC rose from 0.652 with 119 training households to between 0.680 and 0.687 over the last five training sizes, and the training and validation scores converged (0.682 vs 0.685 at the full size). There is no sign of a large train/validation gap.
 
-The model appears to have learned a real predictive association in this sample. The flat validation curve does not suggest that many more households would change the picture for this model, and performance on a genuinely future period or a different dataset remains untested.
+The model appears to capture a predictive association in this sample. The flat validation curve does not suggest that many more households would change the picture for this model, and performance on a genuinely future period or a different dataset remains untested.
 
 ## Summary and next questions
 
 | Question | Answer from this analysis |
 |---|---|
-| Did the initial top 20% drive growth? | **No.** Their spending and revenue share fell. |
+| Did the initial top 20% drive growth? | **Not in this data.** Their spending and revenue share fell in the later window. |
 | Where did growth in the other 80% come from? | **70%** of observed increases came from existing households; **30%** from new or reactivated households. |
 | Is new-or-reactivated status associated with baseline spending rank? | Yes; **Cramér's V = 0.246**. |
 | Can a later fall out of the top 20% be predicted? | Partly; logistic PR-AUC **0.685**, but substantial false negatives remain. |
@@ -406,4 +406,4 @@ The pinned versions are those of the Python 3.11 environment the notebooks were 
 - The predictive model uses **499 households**, limiting the precision of reported performance.
 - The target is **retention of high-spending rank**, not direct customer churn or lifetime value.
 
-**Bottom line:** The initial top 20% did not account for the later spending growth. Most of the increase among other households came from existing customers, not the new or reactivated group. Predicting high-spender rank decline was possible to a degree, but those predictions should not be presented as churn or causal marketing effects.
+**Bottom line:** The initial top 20% did not account for the later spending growth. Most of the increase among other households came from existing customers, not the new or reactivated group; this is a contribution decomposition, and the analysis does not identify why spending changed. Predicting high-spender rank decline was possible to a degree, but those predictions should not be presented as churn or causal marketing effects.
