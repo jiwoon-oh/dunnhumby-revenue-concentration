@@ -115,7 +115,7 @@ I therefore used rank-based tests to compare within-group and between-group chan
 
 ## 8. Test H4-1: absolute spending versus sales share
 
-I treated absolute spending and the group's share of total revenue as separate outcomes. The three household-level tests (A–C) were first corrected together with Bonferroni at `α = 0.05/3 ≈ 0.0167`. After test D (the share bootstrap) was added, the final family was four tests, with a threshold of `α = 0.05/4 = 0.0125`. Every decision is the same under both thresholds. Test D is judged by whether its unadjusted 95% bootstrap interval excludes zero; the notebook computes no multiplicity-adjusted interval for it.
+I treated absolute spending and the group's share of total revenue as separate outcomes. The three household-level tests (A–C) were first corrected together with Bonferroni at `α = 0.05/3 ≈ 0.0167`. Test D (the share bootstrap) was planned as the third comparison of H4-1 but was not in that original three-test family; it was added after the A–C results were seen, which made the family four tests, with a threshold of `α = 0.05/4 = 0.0125`. The Bonferroni threshold was applied to the p-values of A–C only, and each of those decisions is the same under both thresholds. Test D has no p-value and is judged only by whether its unadjusted 95% bootstrap interval excludes zero; no multiplicity-adjusted interval was computed, and no significance after correction is claimed for it.
 
 ### Test A — spending within the initial top 20% (Wilcoxon)
 
@@ -166,7 +166,7 @@ I describe this as a pattern of **reduced concentration or convergence in spendi
 
 ## 10. Define new, reactivated, and existing households
 
-I wanted to know whether spending growth among the remaining 80% primarily came from customers entering or returning to the retailer.
+I wanted to know whether spending growth among the remaining 80% primarily came from customers entering or returning to the retailer. The new and reactivated definitions below, including the 13-week gap, were agreed within the team.
 
 - **New:** first recorded purchase occurred after the stable period began in Week 17.
 - **Reactivated:** not new, but had at least one purchase gap of **13 weeks (91 days)** or more.
@@ -403,7 +403,7 @@ The pinned versions are those of the Python 3.11 environment the notebooks were 
 
 - Rank-based group selection can introduce regression-to-the-mean effects even with the baseline period fixed and sensitivity-tested.
 - Spending comparisons describe observed change, not its cause. The contribution percentages (70% / 30%) are an accounting decomposition, not causal estimates.
-- Multiple testing: tests A–C were first corrected at 0.0167 (three tests) and then at 0.0125 (four tests, after test D was added), with identical decisions. Test D is judged by an unadjusted 95% bootstrap interval, the H4-2 chi-square test at 0.05 without correction, and the existing versus new-or-reactivated Mann–Whitney test had no correction or threshold set.
+- Multiple testing: the Bonferroni threshold was applied to the p-values of tests A–C only, first at 0.0167 (three tests) and then at 0.0125 (four tests, after test D was added), with identical decisions. Test D was planned as the third comparison of H4-1 but was added to the family only after the A–C results were seen. It has no p-value and is judged only by an unadjusted 95% bootstrap interval excluding zero; no adjusted interval was computed and no significance after correction is claimed for it. The H4-2 chi-square test was judged at 0.05 without correction, and the existing versus new-or-reactivated Mann–Whitney test had no correction or threshold set.
 - New or reactivated labels depend on the available transaction history; earlier activity may not be observed.
 - Demographic-data availability may be a proxy for unobserved customer engagement.
 - The predictive model uses **499 households**, limiting the precision of reported performance.
