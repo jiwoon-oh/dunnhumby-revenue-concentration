@@ -387,7 +387,7 @@ The pinned versions are those of the Python 3.11 environment the notebooks were 
    | 2 | `gap_analysis` | — |
    | 3 | `h4_transaction_eda` | `outputs/`: rank stability, Lorenz, Gini, concentration, household counts |
    | 4 | `h4_normality_variance` | `outputs/`: panel summary, normality and Levene tests, sensitivity, Jaccard |
-   | 5 | `h4_nonparametric_tests` | `outputs/`: tests A–C, share bootstrap (test D), Bonferroni table |
+   | 5 | `h4_nonparametric_tests` | `outputs/`: tests A–C, share bootstrap (test D), decision table (Bonferroni for A–C; unadjusted CI for D, see `decision_basis`) |
    | 6 | `h4_2_crosstab` | `outputs/`: status counts, cross-tabs, chi-square, contribution, excluded households |
    | 7 | `ml_tables_eda` | `outputs/`: source-table checks and facts |
    | 8 | `h4_ml_feature_engineering` | `outputs/`: label summary; feature table in `outputs/intermediate/` |

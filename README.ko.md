@@ -383,7 +383,7 @@ pip install jupyter
    | 2 | `gap_analysis` | — |
    | 3 | `h4_transaction_eda` | `outputs/`: 순위 안정성, 로렌츠, 지니, 집중도, 가구 수 |
    | 4 | `h4_normality_variance` | `outputs/`: 패널 요약, 정규성·Levene, 민감도, Jaccard |
-   | 5 | `h4_nonparametric_tests` | `outputs/`: 검정 A~C, 비중 부트스트랩(검정 D), Bonferroni 표 |
+   | 5 | `h4_nonparametric_tests` | `outputs/`: 검정 A~C, 비중 부트스트랩(검정 D), 판정 표(A~C는 Bonferroni, D는 보정 전 구간, `decision_basis` 참고) |
    | 6 | `h4_2_crosstab` | `outputs/`: 고객 상태 집계, 교차표, 카이제곱, 기여분, 제외 가구 |
    | 7 | `ml_tables_eda` | `outputs/`: 원천 테이블 점검 |
    | 8 | `h4_ml_feature_engineering` | `outputs/`: 라벨 요약, 피처 테이블(`outputs/intermediate/`) |
