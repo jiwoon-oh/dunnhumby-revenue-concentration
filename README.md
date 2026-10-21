@@ -4,6 +4,8 @@
 
 Full case study: https://jiwoon-oh.github.io/portfolio/projects/dunnhumby-customer/case1/
 
+This repository covers hypothesis H4 (spending concentration, reactivation, and rank decline), my part of a team project. Other hypotheses were handled by other team members.
+
 ## Question and hypotheses
 
 When a retailer's sales increase, does that growth come from its already valuable customers buying more? Or from other households becoming more active? Using Dunnhumby transaction data, I **fixed the high-spending group at the beginning of the observation period** and tracked what happened to its spending later.
@@ -39,7 +41,7 @@ Instead of assuming an 80/20 Pareto split, I first examined how long a baseline 
 
 ## 2. Choose the early-period length: rank stability
 
-The stable observation interval covered **Weeks 17–99 (83 weeks)**. For a candidate baseline of N weeks, I ranked each household twice—once based on odd weeks and once based on even weeks—and calculated the **Spearman rank correlation**. Increasing N made the ranks more stable, though it also used more of the available period.
+The stable observation interval covered **Weeks 17–99 (83 weeks)**. For a candidate baseline of N weeks, I ranked each household twice, once based on odd weeks and once based on even weeks, and calculated the **Spearman rank correlation**. Increasing N made the ranks more stable, though it also used more of the available period.
 
 I limited the initial period to roughly **10–15%** of the stable interval, or **8–12 weeks**, to avoid defining the baseline using too much of the period I wanted to study.
 
@@ -113,7 +115,7 @@ I therefore used rank-based tests to compare within-group and between-group chan
 
 ## 8. Test H4-1: absolute spending versus sales share
 
-I treated absolute spending and the group's share of total revenue as separate outcomes. The three main household-level tests used a Bonferroni-corrected threshold of `α = 0.05/3 ≈ 0.0167`.
+I treated absolute spending and the group's share of total revenue as separate outcomes. The three household-level tests (A–C) were first corrected together with Bonferroni at `α = 0.05/3 ≈ 0.0167`. After test D (the share bootstrap) was added, the final family was four tests, with a threshold of `α = 0.05/4 = 0.0125`. Every decision is the same under both thresholds. Test D is judged by whether its unadjusted 95% bootstrap interval excludes zero; the notebook computes no multiplicity-adjusted interval for it.
 
 ### Test A — spending within the initial top 20% (Wilcoxon)
 
@@ -187,7 +189,7 @@ I checked that these categories were mutually exclusive and that they covered al
 | Top 20% | 431 (86.4%) | **68 (13.6%)** |
 
 - Minimum expected cell count: **187**, meeting the usual chi-square approximation requirement.
-- Chi-square p-value: **1.5 × 10⁻³⁴**.
+- Chi-square p-value: **1.5 × 10⁻³⁴** (judged at 0.05, with no multiplicity correction).
 - **Cramér's V = 0.246**.
 
 New-or-reactivated status was clearly associated with baseline spending rank. Yet this association alone did not establish that newly active households caused most of the sales growth.
@@ -207,18 +209,18 @@ New or reactivated households represented 43.5% of the group but contributed 30%
 
 Comparing the distributions of change within the remaining 80%:
 
-- Mann–Whitney U **p = 0.000928**, significant after Bonferroni correction
+- Mann–Whitney U **p = 0.000928**. This is a separate H4-2 test, outside the four-test H4-1 family above; the notebook set no multiplicity correction or decision threshold for it
 - Rank-biserial effect size **0.086**, small
 - Common-language effect size **0.457**, close to 0.5
-- Comparison included **1,993 households**
+- Comparison included **1,993 households** (866 new or reactivated, 1,127 existing)
 
-The difference was detectable statistically, but its effect size was small, so the effect size is reported alongside the p-value to separate **statistical significance from practical importance**.
+The p-value is small, but the effect size is small too, so the effect size is reported alongside the p-value to separate **statistical significance from practical importance**.
 
 ![Left: existing households contributed 70.0% and new or reactivated households 30.0% of the net spending increase in the remaining 80%. Right: median change per household +51.78 for existing and +10.26 for new or reactivated households](images/cohort-contribution.png)
 
 ## 13. H4-2 conclusion
 
-New-or-reactivated status and high-spender status were associated, but **existing households accounted for 70% of the spending growth** within the remaining 80%. New or reactivated households did not dominate the observed growth.
+New-or-reactivated status and high-spender status were associated, but **existing households accounted for 70% of the observed spending increase** within the remaining 80%. New or reactivated households did not dominate the observed increase.
 
 Here, 'contribution' is an **accounting decomposition of observed spending changes**, not a causal estimate of the effect of acquiring or reactivating customers.
 
@@ -357,7 +359,7 @@ The model appears to capture a predictive association in this sample. The flat v
 | Question | Answer from this analysis |
 |---|---|
 | Did the initial top 20% drive growth? | **Not in this data.** Their spending and revenue share fell in the later window. |
-| Where did growth in the other 80% come from? | **70%** of observed increases came from existing households; **30%** from new or reactivated households. |
+| Which households accounted for the increase in the other 80%? | **70%** of the observed net increase is attributed to existing households and **30%** to new or reactivated households (an accounting decomposition, not a causal estimate). |
 | Is new-or-reactivated status associated with baseline spending rank? | Yes; **Cramér's V = 0.246**. |
 | Can a later fall out of the top 20% be predicted? | Partly; logistic PR-AUC **0.685**, but substantial false negatives remain. |
 
@@ -400,7 +402,8 @@ The pinned versions are those of the Python 3.11 environment the notebooks were 
 ## Limitations
 
 - Rank-based group selection can introduce regression-to-the-mean effects even with the baseline period fixed and sensitivity-tested.
-- Spending comparisons describe observed change, not its cause.
+- Spending comparisons describe observed change, not its cause. The contribution percentages (70% / 30%) are an accounting decomposition, not causal estimates.
+- Multiple testing: tests A–C were first corrected at 0.0167 (three tests) and then at 0.0125 (four tests, after test D was added), with identical decisions. Test D is judged by an unadjusted 95% bootstrap interval, the H4-2 chi-square test at 0.05 without correction, and the existing versus new-or-reactivated Mann–Whitney test had no correction or threshold set.
 - New or reactivated labels depend on the available transaction history; earlier activity may not be observed.
 - Demographic-data availability may be a proxy for unobserved customer engagement.
 - The predictive model uses **499 households**, limiting the precision of reported performance.
